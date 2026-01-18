@@ -14,9 +14,15 @@ app = FastAPI(
 )
 
 # CORS middleware for React frontend
+# Allow localhost for development and Render domains for production
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:5173"],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "https://pokekawaii-frontend.onrender.com",  # Update with your Render frontend URL
+        "*"  # Allow all origins (remove this in production for better security)
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

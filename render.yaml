@@ -23,11 +23,8 @@ services:
     autoDeploy: true
 
   # Frontend Service - Static Site
-  - type: web
+  - type: static
     name: pokekawaii-frontend
-    runtime: static
-    region: singapore  # Should match backend region for lower latency
-    plan: free
     branch: main
     rootDir: frontend
     buildCommand: npm install && npm run build
@@ -55,4 +52,3 @@ services:
         value: 20.11.0
       - key: VITE_API_URL
         value: https://pokekawaii-backend.onrender.com/api
-    autoDeploy: true

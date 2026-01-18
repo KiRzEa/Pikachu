@@ -13,6 +13,7 @@ function GameBoard({
   disabled,
   matchPath,
   onMatchLineComplete,
+  fadingCells = new Set(),
 }) {
   const isCellSelected = (row, col) => {
     return selectedCell && selectedCell.row === row && selectedCell.col === col;
@@ -24,6 +25,11 @@ function GameBoard({
       (hintCells.pos1.row === row && hintCells.pos1.col === col) ||
       (hintCells.pos2.row === row && hintCells.pos2.col === col)
     );
+  };
+
+  const isCellFading = (row, col) => {
+    const cellKey = `${row}-${col}`;
+    return fadingCells.has(cellKey);
   };
 
   return (
@@ -38,6 +44,7 @@ function GameBoard({
               col={colIndex}
               isSelected={isCellSelected(rowIndex, colIndex)}
               isHinted={isCellHinted(rowIndex, colIndex)}
+              isFading={isCellFading(rowIndex, colIndex)}
               onClick={() => !disabled && onCellClick(rowIndex, colIndex)}
               disabled={disabled}
             />

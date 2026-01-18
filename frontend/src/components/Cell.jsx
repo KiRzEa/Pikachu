@@ -2,7 +2,7 @@ import React from 'react';
 import './Cell.css';
 import { getPokemonSprite, getPokemonName } from '../services/pokemonSprites';
 
-function Cell({ cell, row, col, isSelected, isHinted, onClick, disabled }) {
+function Cell({ cell, row, col, isSelected, isHinted, isFading, onClick, disabled }) {
   const isEmpty = cell.type === 'empty';
   const isFrozen = cell.is_frozen;
 
@@ -12,6 +12,7 @@ function Cell({ cell, row, col, isSelected, isHinted, onClick, disabled }) {
     if (isEmpty) classes.push('empty');
     if (isSelected) classes.push('selected');
     if (isHinted) classes.push('hinted');
+    if (isFading) classes.push('fading');
     if (isFrozen) classes.push('frozen');
     if (disabled && !isEmpty) classes.push('disabled');
 

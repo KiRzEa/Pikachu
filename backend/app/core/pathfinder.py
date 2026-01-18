@@ -191,7 +191,8 @@ class PathFinder:
                 if self.grid[pos1.row][col].type != CellType.EMPTY:
                     return MatchResult(is_valid=False, turns=0)
 
-            path = [Position(row=pos1.row, col=col) for col in range(start_col, end_col + 1)]
+            # For straight line, we only need start and end points
+            path = [pos1, pos2]
             return MatchResult(is_valid=True, path=path, turns=0)
 
         elif pos1.col == pos2.col:
@@ -203,7 +204,8 @@ class PathFinder:
                 if self.grid[row][pos1.col].type != CellType.EMPTY:
                     return MatchResult(is_valid=False, turns=0)
 
-            path = [Position(row=row, col=pos1.col) for row in range(start_row, end_row + 1)]
+            # For straight line, we only need start and end points
+            path = [pos1, pos2]
             return MatchResult(is_valid=True, path=path, turns=0)
 
         return MatchResult(is_valid=False, turns=0)
@@ -385,57 +387,33 @@ class PathFinder:
         return False
 
     def _build_path(self, pos1: Position, corner: Position, pos2: Position) -> List[Position]:
-        """Build path through corner."""
-        path = []
+        """Build path through corner - only return turning points for line drawing."""
+        # For L-shaped path, we only need: start -> corner -> end
+        # Check if corner is same as start or end (degenerate case)
+        if (corner.row == pos1.row and corner.col == pos1.col):
+            return [pos1, pos2]
+        if (corner.row == pos2.row and corner.col == pos2.col):
+            return [pos1, pos2]
 
-        # From pos1 to corner
-        if pos1.row == corner.row:
-            start_col = min(pos1.col, corner.col)
-            end_col = max(pos1.col, corner.col)
-            for col in range(start_col, end_col + 1):
-                path.append(Position(row=pos1.row, col=col))
-        else:
-            start_row = min(pos1.row, corner.row)
-            end_row = max(pos1.row, corner.row)
-            for row in range(start_row, end_row + 1):
-                path.append(Position(row=row, col=pos1.col))
-
-        # From corner to pos2 (skip corner as it's already added)
-        if corner.row == pos2.row:
-            start_col = min(corner.col, pos2.col)
-            end_col = max(corner.col, pos2.col)
-            for col in range(start_col + 1, end_col + 1):
-                path.append(Position(row=corner.row, col=col))
-        else:
-            start_row = min(corner.row, pos2.row)
-            end_row = max(corner.row, pos2.row)
-            for row in range(start_row + 1, end_row + 1):
-                path.append(Position(row=row, col=corner.col))
-
-        return path
+        return [pos1, corner, pos2]
 
     def _build_path_multi(self, pos1: Position, mid1: Position,
                           mid2: Position, pos2: Position) -> List[Position]:
-        """Build path through multiple points."""
-        path = []
+        """Build path through multiple points - only return turning points for line drawing."""
+        # For Z/U-shaped path, we only need the corner points
+        path = [pos1]
 
-        # Helper to add segment
-        def add_segment(start: Position, end: Position):
-            if start.row == end.row:
-                start_col = min(start.col, end.col)
-                end_col = max(start.col, end.col)
-                for col in range(start_col, end_col + 1):
-                    if not path or path[-1] != Position(row=start.row, col=col):
-                        path.append(Position(row=start.row, col=col))
-            else:
-                start_row = min(start.row, end.row)
-                end_row = max(start.row, end.row)
-                for row in range(start_row, end_row + 1):
-                    if not path or path[-1] != Position(row=row, col=start.col):
-                        path.append(Position(row=row, col=start.col))
+        # Add mid1 if it's a real turning point (not same as pos1)
+        if not (mid1.row == pos1.row and mid1.col == pos1.col):
+            path.append(mid1)
 
-        add_segment(pos1, mid1)
-        add_segment(mid1, mid2)
-        add_segment(mid2, pos2)
+        # Add mid2 if it's a real turning point (not same as mid1 or pos1)
+        if not (mid2.row == mid1.row and mid2.col == mid1.col) and \
+           not (mid2.row == pos1.row and mid2.col == pos1.col):
+            path.append(mid2)
+
+        # Always add end point if it's different from the last point
+        if not (pos2.row == path[-1].row and pos2.col == path[-1].col):
+            path.append(pos2)
 
         return path

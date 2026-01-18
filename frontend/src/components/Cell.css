@@ -77,6 +77,26 @@
   filter: grayscale(0.3);
 }
 
+.cell.fading {
+  animation: fadeOut 0.8s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
 .pokemon-emoji {
   font-size: 2.5rem;
   user-select: none;

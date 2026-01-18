@@ -5,9 +5,9 @@ services:
   # Backend Service - FastAPI
   - type: web
     name: pokekawaii-backend
-    runtime: python
-    region: singapore  # Change to your preferred region: oregon, frankfurt, singapore, etc.
-    plan: free  # free, starter, standard, pro
+    env: python
+    region: singapore
+    plan: free
     branch: main
     rootDir: backend
     buildCommand: pip install -r requirements.txt
@@ -18,37 +18,4 @@ services:
         value: 3.11.0
       - key: ENVIRONMENT
         value: production
-      - key: PORT
-        generateValue: true
     autoDeploy: true
-
-  # Frontend Service - Static Site
-  - type: static
-    name: pokekawaii-frontend
-    branch: main
-    rootDir: frontend
-    buildCommand: npm install && npm run build
-    staticPublishPath: ./dist
-    pullRequestPreviewsEnabled: true
-    headers:
-      - path: /*
-        name: X-Frame-Options
-        value: SAMEORIGIN
-      - path: /*
-        name: X-Content-Type-Options
-        value: nosniff
-      - path: /*
-        name: X-XSS-Protection
-        value: 1; mode=block
-    routes:
-      - type: rewrite
-        source: /api/*
-        destination: https://pokekawaii-backend.onrender.com/api/*
-      - type: rewrite
-        source: /*
-        destination: /index.html
-    envVars:
-      - key: NODE_VERSION
-        value: 20.11.0
-      - key: VITE_API_URL
-        value: https://pokekawaii-backend.onrender.com/api

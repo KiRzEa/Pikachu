@@ -11,7 +11,11 @@
 
 ## 📋 Deployment Steps
 
-### Option 1: Blueprint Deployment (Fastest) ⭐
+### Recommended Approach: Blueprint + Manual
+
+**⚠️ Note:** Render Blueprint YAML only supports backend. Frontend must be deployed manually.
+
+#### Part 1: Deploy Backend (Blueprint)
 
 1. **Go to Render Dashboard**
    - Visit: https://dashboard.render.com/
@@ -22,19 +26,46 @@
    - Select: `KiRzEa/Pikachu`
    - Render detects `render.yaml` automatically
 
-3. **Review Services**
+3. **Review Backend Service**
    - ✅ pokekawaii-backend (Python Web Service)
-   - ✅ pokekawaii-frontend (Static Site)
+   - Region: Singapore
+   - Plan: Free
 
 4. **Click "Apply"**
-   - Wait 5-10 minutes for deployment
+   - Wait 3-5 minutes for backend deployment
    - Monitor build logs
+   - **Copy the backend URL** (e.g., `https://pokekawaii-backend.onrender.com`)
 
-5. **Update Frontend Environment Variable**
-   - After backend deploys, copy backend URL
-   - Go to frontend service → Environment tab
-   - Update `VITE_API_URL` to: `https://[your-backend-url].onrender.com/api`
-   - Save (auto redeploys)
+#### Part 2: Deploy Frontend (Manual)
+
+1. **Create Static Site**
+   - Click **"New +"** → **"Static Site"**
+   - Connect to `KiRzEa/Pikachu` repository
+
+2. **Configure Frontend**
+   - **Name**: `pokekawaii-frontend`
+   - **Branch**: `main`
+   - **Root Directory**: `frontend`
+   - **Build Command**: `npm install && npm run build`
+   - **Publish Directory**: `dist`
+
+3. **Add Environment Variables**
+   - Click **"Advanced"** → **"Add Environment Variable"**
+   - Add:
+     ```
+     NODE_VERSION = 20.11.0
+     VITE_API_URL = https://pokekawaii-backend.onrender.com/api
+     ```
+   - ⚠️ **Replace with your actual backend URL from Part 1**
+
+4. **Configure Redirects**
+   - The `_redirects` file is already in `frontend/public/`
+   - Render will automatically use it for SPA routing
+
+5. **Deploy Frontend**
+   - Click **"Create Static Site"**
+   - Wait 2-3 minutes
+   - Access your app at the provided URL
 
 6. **Access Your App**
    - Frontend: `https://pokekawaii-frontend.onrender.com`

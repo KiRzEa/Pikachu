@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phân Tích Cơ Chế Game & Giải Thuật - PokeKawaii</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        h2 {
+            color: #764ba2;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            font-size: 1.8em;
+        }
+
+        h3 {
+            color: #667eea;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        h4 {
+            color: #764ba2;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .algorithm-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .complexity-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .note {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .toc {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+
+        .toc h3 {
+            margin-top: 0;
+            color: #764ba2;
+        }
+
+        .toc ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .toc a {
+            color: #667eea;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .toc a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .stat-card {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin: 10px 10px 10px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .architecture-diagram {
+            background: white;
+            border: 2px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-family: monospace;
+            overflow-x: auto;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 PHÂN TÍCH CƠ CHẾ GAME & GIẢI THUẬT</h1>
+        <div class="subtitle">PokeKawaii - Game Ghép Hình Pokemon Kawaii Classic</div>
+
+        <div class="success">
+            <strong>📋 Tóm tắt:</strong> Tài liệu này phân tích chi tiết các giải thuật, cấu trúc dữ liệu và cơ chế game được sử dụng trong dự án PokeKawaii - một trò chơi ghép hình Pokemon theo phong cách Pikachu Kawaii Classic.
+        </div>
+
+        <!-- Thống kê tổng quan -->
+        <div style="text-align: center; margin: 40px 0;">
+            <div class="stat-card">
+                <span class="stat-number">7</span>
+                <span class="stat-label">Giải thuật chính</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">20</span>
+                <span class="stat-label">Loại Pokemon</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">8×12</span>
+                <span class="stat-label">Kích thước bàn chơi</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">3</span>
+                <span class="stat-label">Số lượt rẽ tối đa</span>
+            </div>
+        </div>
+
+        <!-- Mục lục -->
+        <div class="toc">
+            <h3>📑 Mục Lục</h3>
+            <ul>
+                <li><a href="#kien-truc">1. Kiến Trúc Hệ Thống</a></li>
+                <li><a href="#co-che-game">2. Cơ Chế Game</a></li>
+                <li><a href="#cau-truc-du-lieu">3. Cấu Trúc Dữ Liệu</a></li>
+                <li><a href="#giai-thuat">4. Các Giải Thuật Chính</a></li>
+                <li><a href="#he-thong-game">5. Các Hệ Thống Game</a></li>
+                <li><a href="#phan-tich-do-phuc-tap">6. Phân Tích Độ Phức Tạp</a></li>
+                <li><a href="#frontend">7. Kiến Trúc Frontend</a></li>
+                <li><a href="#ket-luan">8. Kết Luận & Đánh Giá</a></li>
+            </ul>
+        </div>
+
+        <!-- 1. Kiến trúc hệ thống -->
+        <h2 id="kien-truc">1. KIẾN TRÚC HỆ THỐNG</h2>
+
+        <h3>1.1. Tổng Quan Kiến Trúc</h3>
+        <p>PokeKawaii được xây dựng theo mô hình <span class="highlight">Client-Server</span> với kiến trúc tách biệt giữa Frontend và Backend:</p>
+
+        <table>
+            <tr>
+                <th>Thành phần</th>
+                <th>Công nghệ</th>
+                <th>Vai trò</th>
+            </tr>
+            <tr>
+                <td><strong>Backend</strong></td>
+                <td>Python + FastAPI</td>
+                <td>Xử lý logic game, giải thuật, API RESTful</td>
+            </tr>
+            <tr>
+                <td><strong>Frontend</strong></td>
+                <td>React 18 + Vite</td>
+                <td>Giao diện người dùng, animation, state management</td>
+            </tr>
+            <tr>
+                <td><strong>Communication</strong></td>
+                <td>Axios HTTP Client</td>
+                <td>Giao tiếp giữa client-server qua REST API</td>
+            </tr>
+            <tr>
+                <td><strong>Data Validation</strong></td>
+                <td>Pydantic</td>
+                <td>Kiểm tra và validate dữ liệu</td>
+            </tr>
+        </table>
+
+        <h3>1.2. Cấu Trúc Thư Mục</h3>
+        <div class="architecture-diagram">
+PokeKawaii/
+├── backend/
+│   ├── app/
+│   │   ├── main.py                    # Entry point FastAPI
+│   │   ├── api/
+│   │   │   └── routes.py              # Định nghĩa API endpoints
+│   │   ├── models/
+│   │   │   └── game.py                # Data models (Pydantic)
+│   │   ├── services/
+│   │   │   ├── game_service.py        # Logic game chính
+│   │   │   └── pokemon_data.py        # Cấu hình Pokemon
+│   │   └── core/
+│   │       └── pathfinder.py          # Giải thuật tìm đường
+│   ├── requirements.txt
+│   ├── run.py
+│   └── test_algorithms.py             # Test các giải thuật
+└── frontend/
+    ├── src/
+    │   ├── components/
+    │   │   ├── GameBoard.jsx          # Component bàn chơi
+    │   │   ├── Cell.jsx               # Component ô Pokemon
+    │   │   ├── MatchLine.jsx          # Animation đường nối
+    │   │   └── GameInfo.jsx           # Hiển thị điểm/mạng
+    │   ├── services/
+    │   │   └── api.js                 # API client
+    │   └── App.jsx                    # Root component
+    ├── package.json
+    └── vite.config.js
+        </div>
+
+        <!-- 2. Cơ chế game -->
+        <h2 id="co-che-game">2. CƠ CHẾ GAME</h2>
+
+        <h3>2.1. Giới Thiệu Game</h3>
+        <p><strong>PokeKawaii</strong> là game ghép hình theo phong cách <span class="highlight">Pikachu Kawaii Classic</span>, lấy cảm hứng từ game ghép hình Mahjong truyền thống.</p>
+
+        <div class="note">
+            <strong>🎯 Mục tiêu:</strong> Ghép các cặp Pokemon giống nhau bằng cách nối chúng với đường đi hợp lệ (tối đa 3 lượt rẽ).
+        </div>
+
+        <h3>2.2. Luật Chơi Chi Tiết</h3>
+
+        <h4>2.2.1. Hệ Thống Ghép Cặp</h4>
+        <ul>
+            <li>Người chơi click chọn 2 ô Pokemon giống nhau</li>
+            <li>Hệ thống kiểm tra xem có đường đi hợp lệ hay không</li>
+            <li>Đường đi hợp lệ = đường nối gồm các đoạn thẳng (ngang/dọc) với <strong>tối đa 3 lượt rẽ</strong></li>
+            <li>Nếu hợp lệ: xóa 2 Pokemon, cộng điểm, xóa đá băng liền kề (nếu có)</li>
+        </ul>
+
+        <h4>2.2.2. Ràng Buộc Đường Đi</h4>
+        <div class="algorithm-box">
+            <strong>Các loại đường đi theo số lượt rẽ:</strong>
+            <ul style="margin-top: 10px;">
+                <li><strong>0 lượt rẽ:</strong> Đường thẳng (cùng hàng hoặc cùng cột)</li>
+                <li><strong>1 lượt rẽ:</strong> Đường hình chữ L</li>
+                <li><strong>2 lượt rẽ:</strong> Đường hình Z hoặc hình U</li>
+                <li><strong>3 lượt rẽ:</strong> Đường phức tạp, có thể đi vòng qua biên bàn chơi</li>
+            </ul>
+        </div>
+
+        <h4>2.2.3. Hệ Thống Điểm</h4>
+        <div class="code-block">
+score_per_match = 10 × (4 - number_of_turns)
+
+Ví dụ:
+- 0 lượt rẽ (thẳng):    10 × 4 = 40 điểm
+- 1 lượt rẽ (chữ L):    10 × 3 = 30 điểm
+- 2 lượt rẽ (chữ Z):    10 × 2 = 20 điểm
+- 3 lượt rẽ (phức tạp): 10 × 1 = 10 điểm
+        </div>
+
+        <h4>2.4.4. Hệ Thống Mạng</h4>
+        <ul>
+            <li>Bắt đầu với <strong>5 mạng</strong></li>
+            <li>Xáo bàn (shuffle) = <strong>-1 mạng</strong></li>
+            <li>Game over khi hết mạng</li>
+        </ul>
+
+        <h4>2.2.5. Cơ Chế Đá Băng (Ice)</h4>
+        <ul>
+            <li>Xuất hiện từ <strong>level 4</strong> trở đi</li>
+            <li>Đá băng phủ lên ô Pokemon, không chặn đường đi nhưng giảm số ô khả dụng</li>
+            <li>Khi ghép Pokemon, đá băng ở 4 ô liền kề (trên/dưới/trái/phải) sẽ bị xóa</li>
+            <li>Số lượng đá băng tăng theo level: <code>min(level - 3, total_cells / 4)</code></li>
+        </ul>
+
+        <h4>2.2.6. Hệ Thống Gợi Ý (Hint)</h4>
+        <ul>
+            <li>Tìm và hiển thị một cặp Pokemon có thể ghép được</li>
+            <li>Sử dụng hash map để nhóm Pokemon theo loại (tối ưu hiệu suất)</li>
+            <li>Tự động kích hoạt xáo bàn nếu không còn nước đi hợp lệ</li>
+        </ul>
+
+        <h4>2.2.7. Xáo Bàn (Shuffle)</h4>
+        <ul>
+            <li>Tái phân bố ngẫu nhiên vị trí Pokemon</li>
+            <li>Mất <strong>1 mạng</strong></li>
+            <li>Được kích hoạt tự động khi hết nước đi hoặc người chơi yêu cầu</li>
+        </ul>
+
+        <h4>2.2.8. Thăng Cấp Level</h4>
+        <ul>
+            <li>Bắt đầu từ level 1</li>
+            <li>Thắng khi xóa hết Pokemon trên bàn</li>
+            <li>Level tiếp theo tăng độ khó (thêm đá băng)</li>
+        </ul>
+
+        <h4>2.2.9. Giới Hạn Thời Gian</h4>
+        <ul>
+            <li><strong>5 phút (300 giây)</strong> mỗi ván</li>
+            <li>Game over khi hết thời gian</li>
+        </ul>
+
+        <!-- 3. Cấu trúc dữ liệu -->
+        <h2 id="cau-truc-du-lieu">3. CẤU TRÚC DỮ LIỆU</h2>
+
+        <h3>3.1. Backend Models (Pydantic)</h3>
+
+        <h4>3.1.1. Cell (Ô trên bàn chơi)</h4>
+        <div class="code-block">
+class Cell(BaseModel):
+    type: CellType           # EMPTY | POKEMON | ICE
+    pokemon_id: int          # 1-20 (ID Pokemon)
+    is_frozen: bool          # True nếu bị phủ đá băng
+        </div>
+
+        <h4>3.1.2. Position (Vị trí tọa độ)</h4>
+        <div class="code-block">
+class Position(BaseModel):
+    row: int                 # Hàng (0-indexed)
+    col: int                 # Cột (0-indexed)
+        </div>
+
+        <h4>3.1.3. MatchResult (Kết quả ghép cặp)</h4>
+        <div class="code-block">
+class MatchResult(BaseModel):
+    is_valid: bool                  # True nếu ghép được
+    path: List[Position]            # Danh sách tọa độ đường đi
+    turns: int                      # Số lượt rẽ (0-3)
+        </div>
+
+        <h4>3.1.4. GameBoard (Bàn chơi)</h4>
+        <div class="code-block">
+class GameBoard(BaseModel):
+    grid: List[List[Cell]]          # Ma trận 2D chứa các ô
+    rows: int                       # Số hàng (default: 8)
+    cols: int                       # Số cột (default: 12)
+    time_remaining: int             # Thời gian còn lại (giây)
+    lives: int                      # Số mạng còn lại
+    level: int                      # Level hiện tại
+    score: int                      # Điểm số
+        </div>
+
+        <h4>3.1.5. GameState (Trạng thái game)</h4>
+        <div class="code-block">
+class GameState(BaseModel):
+    board: GameBoard                # Bàn chơi
+    game_over: bool                 # True nếu game kết thúc
+    victory: bool                   # True nếu thắng
+        </div>
+
+        <h3>3.2. Lưu Trữ Dữ Liệu</h3>
+
+        <h4>3.2.1. In-Memory Storage</h4>
+        <div class="code-block">
+# Backend lưu trữ các game đang chơi trong RAM
+games: Dict[str, GameState]
+# Key: game_id (UUID)
+# Value: GameState object
+        </div>
+
+        <h4>3.2.2. Hash Map cho Hint System</h4>
+        <div class="code-block">
+# Nhóm Pokemon theo loại để tìm gợi ý hiệu quả
+pokemon_positions: Dict[int, List[Position]]
+
+# Key: pokemon_id (1-20)
+# Value: Danh sách vị trí của Pokemon đó
+
+# Ví dụ:
+# {
+#   25: [(0,0), (3,5)],      # Pikachu ở 2 vị trí
+#   1: [(1,2), (4,7)],       # Bulbasaur ở 2 vị trí
+#   ...
+# }
+        </div>
+
+        <div class="note">
+            <strong>💡 Lợi ích của Hash Map:</strong> Thay vì duyệt qua toàn bộ bàn chơi O(n²) để tìm cặp, hash map cho phép truy xuất O(1) các Pokemon cùng loại, giảm độ phức tạp xuống O(n).
+        </div>
+
+        <!-- 4. Các giải thuật chính -->
+        <h2 id="giai-thuat">4. CÁC GIẢI THUẬT CHÍNH</h2>
+
+        <h3>4.1. Fisher-Yates Shuffle Algorithm</h3>
+        <div class="algorithm-box">
+            <strong>📍 Vị trí:</strong> <code>/backend/app/services/game_service.py</code> (dòng 99-113)<br>
+            <strong>🎯 Mục đích:</strong> Xáo trộn ngẫu nhiên phân bố Pokemon trên bàn chơi
+        </div>
+
+        <div class="complexity-box">
+            <strong>⏱️ Độ phức tạp:</strong><br>
+            • Time Complexity: <strong>O(n)</strong> - Linear time<br>
+            • Space Complexity: <strong>O(1)</strong> - In-place shuffling
+        </div>
+
+        <h4>4.1.1. Mô Tả Giải Thuật</h4>
+        <p>Fisher-Yates (còn gọi là Knuth Shuffle) là thuật toán xáo trộn không thiên vị, đảm bảo mọi hoán vị có xác suất xuất hiện bằng nhau.</p>
+
+        <div class="code-block">
+def fisher_yates_shuffle(items):
+    """
+    Xáo trộn danh sách tại chỗ (in-place)
+    """
+    n = len(items)
+
+    # Duyệt từ cuối về đầu
+    for i in range(n - 1, 0, -1):
+        # Chọn ngẫu nhiên index j từ [0, i]
+        j = random.randint(0, i)
+
+        # Hoán đổi items[i] với items[j]
+        items[i], items[j] = items[j], items[i]
+
+    return items
+        </div>
+
+        <h4>4.1.2. Ứng Dụng Trong Game</h4>
+        <ul>
+            <li>Khởi tạo bàn chơi mới (phân bố ngẫu nhiên Pokemon)</li>
+            <li>Xáo bàn khi hết nước đi hoặc người chơi yêu cầu</li>
+            <li>Đảm bảo mỗi ván chơi có bố cục khác nhau</li>
+        </ul>
+
+        <h4>4.1.3. Ví Dụ Minh Họa</h4>
+        <div class="code-block">
+Input:  [1, 2, 3, 4, 5]
+
+Bước 1: i=4, j=2 → [1, 2, 5, 4, 3]
+Bước 2: i=3, j=1 → [1, 4, 5, 2, 3]
+Bước 3: i=2, j=0 → [5, 4, 1, 2, 3]
+Bước 4: i=1, j=0 → [4, 5, 1, 2, 3]
+
+Output: [4, 5, 1, 2, 3]
+        </div>
+
+        <!-- Giải thuật 2: Pathfinding -->
+        <h3>4.2. Pathfinding với Ràng Buộc Lượt Rẽ</h3>
+        <div class="algorithm-box">
+            <strong>📍 Vị trí:</strong> <code>/backend/app/core/pathfinder.py</code><br>
+            <strong>🎯 Mục đích:</strong> Tìm đường nối giữa 2 Pokemon với tối đa 3 lượt rẽ
+        </div>
+
+        <p>Đây là <span class="highlight">giải thuật quan trọng nhất</span> của game, quyết định xem 2 Pokemon có ghép được không.</p>
+
+        <h4>4.2.1. Phương Pháp A: BFS với Theo Dõi Lượt Rẽ</h4>
+        <div class="complexity-box">
+            <strong>⏱️ Độ phức tạp:</strong><br>
+            • Time Complexity: <strong>O(rows × cols × 4)</strong><br>
+            • Space Complexity: <strong>O(rows × cols)</strong>
+        </div>
+
+        <div class="code-block">
+def find_path_bfs(start, end, grid):
+    """
+    Tìm đường bằng BFS với tracking hướng và số lượt rẽ
+    """
+    queue = deque([
+        (start.row, start.col, None, 0, [start])
+        # (row, col, direction, turns, path)
+    ])
+
+    visited = set()
+
+    while queue:
+        row, col, prev_dir, turns, path = queue.popleft()
+
+        # Kiểm tra đích
+        if (row, col) == (end.row, end.col):
+            return MatchResult(
+                is_valid=True,
+                path=path,
+                turns=turns
+            )
+
+        # Duyệt 4 hướng: lên, xuống, trái, phải
+        for direction in ['up', 'down', 'left', 'right']:
+            new_row, new_col = move(row, col, direction)
+
+            # Tính số lượt rẽ mới
+            new_turns = turns
+            if prev_dir and prev_dir != direction:
+                new_turns += 1
+
+            # Dừng nếu quá 3 lượt rẽ
+            if new_turns > 3:
+                continue
+
+            # Kiểm tra hợp lệ và chưa thăm
+            if is_valid(new_row, new_col) and \
+               (new_row, new_col, direction) not in visited:
+
+                visited.add((new_row, new_col, direction))
+                queue.append((
+                    new_row, new_col, direction,
+                    new_turns, path + [Position(new_row, new_col)]
+                ))
+
+    return MatchResult(is_valid=False, path=[], turns=0)
+        </div>
+
+        <h4>4.2.2. Phương Pháp B: Simplified Pathfinding ⭐ (ĐANG SỬ DỤNG)</h4>
+        <div class="algorithm-box">
+            <strong>📍 Vị trí:</strong> <code>/backend/app/core/pathfinder.py</code> (dòng 135-181)<br>
+            <strong>✨ Đặc điểm:</strong> Kiểm tra các loại đường theo thứ tự từ đơn giản → phức tạp
+        </div>
+
+        <div class="complexity-box">
+            <strong>⏱️ Độ phức tạp:</strong><br>
+            • Time Complexity: <strong>O(rows × cols)</strong> - Worst case<br>
+            • Space Complexity: <strong>O(rows × cols)</strong><br>
+            • <strong>Tối ưu:</strong> Early termination khi tìm thấy đường
+        </div>
+
+        <p><strong>Chiến lược:</strong> Thử các loại đường từ đơn giản nhất (0 rẽ) đến phức tạp nhất (3 rẽ).</p>
+
+        <h5>Bước 1: Đường Thẳng (0 lượt rẽ)</h5>
+        <div class="code-block">
+# Kiểm tra cùng hàng
+if pos1.row == pos2.row:
+    if is_line_clear_horizontal(pos1.col, pos2.col, pos1.row):
+        return MatchResult(
+            is_valid=True,
+            path=[pos1, pos2],
+            turns=0
+        )
+
+# Kiểm tra cùng cột
+if pos1.col == pos2.col:
+    if is_line_clear_vertical(pos1.row, pos2.row, pos1.col):
+        return MatchResult(
+            is_valid=True,
+            path=[pos1, pos2],
+            turns=0
+        )
+        </div>
+
+        <h5>Bước 2: Đường Chữ L (1 lượt rẽ)</h5>
+        <div class="code-block">
+# Thử góc 1: (pos1.row, pos2.col)
+corner1 = Position(pos1.row, pos2.col)
+if is_empty(corner1):
+    if is_line_clear_horizontal(pos1.col, corner1.col, pos1.row) and \
+       is_line_clear_vertical(corner1.row, pos2.row, corner1.col):
+        return MatchResult(
+            is_valid=True,
+            path=[pos1, corner1, pos2],
+            turns=1
+        )
+
+# Thử góc 2: (pos2.row, pos1.col)
+corner2 = Position(pos2.row, pos1.col)
+if is_empty(corner2):
+    if is_line_clear_vertical(pos1.row, corner2.row, pos1.col) and \
+       is_line_clear_horizontal(corner2.col, pos2.col, pos2.row):
+        return MatchResult(
+            is_valid=True,
+            path=[pos1, corner2, pos2],
+            turns=1
+        )
+        </div>
+
+        <h5>Bước 3: Đường Chữ Z/U (2 lượt rẽ)</h5>
+        <div class="code-block">
+# Thử mọi hàng làm đường ngang giữa
+for mid_row in range(-1, rows + 1):
+    mid1 = Position(mid_row, pos1.col)
+    mid2 = Position(mid_row, pos2.col)
+
+    if is_path_clear([pos1, mid1, mid2, pos2]):
+        return MatchResult(
+            is_valid=True,
+            path=[pos1, mid1, mid2, pos2],
+            turns=2
+        )
+
+# Thử mọi cột làm đường dọc giữa
+for mid_col in range(-1, cols + 1):
+    mid1 = Position(pos1.row, mid_col)
+    mid2 = Position(pos2.row, mid_col)
+
+    if is_path_clear([pos1, mid1, mid2, pos2]):
+        return MatchResult(
+            is_valid=True,
+            path=[pos1, mid1, mid2, pos2],
+            turns=2
+        )
+        </div>
+
+        <h5>Bước 4: Đường Qua Biên (2-3 lượt rẽ)</h5>
+        <div class="note">
+            <strong>💡 Đặc điểm:</strong> Cho phép đường đi "vượt ra ngoài" bàn chơi (qua các ô ảo ở viền), sau đó quay lại.
+        </div>
+
+        <div class="code-block">
+# 4 biên: top (-1), bottom (rows), left (-1), right (cols)
+borders = [
+    -1,           # Biên trên
+    rows,         # Biên dưới
+    -1,           # Biên trái
+    cols          # Biên phải
+]
+
+for border in borders:
+    if is_edge_path_clear(pos1, pos2, border):
+        return MatchResult(
+            is_valid=True,
+            path=build_border_path(pos1, pos2, border),
+            turns=2 or 3
+        )
+        </div>
+
+        <h4>4.2.3. Helper Methods</h4>
+        <table>
+            <tr>
+                <th>Method</th>
+                <th>Mô tả</th>
+            </tr>
+            <tr>
+                <td><code>_is_line_clear()</code></td>
+                <td>Kiểm tra xem đoạn thẳng có bị chặn bởi Pokemon khác không</td>
+            </tr>
+            <tr>
+                <td><code>_build_path()</code></td>
+                <td>Xây dựng đường đi qua 1 góc (chữ L)</td>
+            </tr>
+            <tr>
+                <td><code>_build_path_multi()</code></td>
+                <td>Xây dựng đường đi qua nhiều điểm (chữ Z/U)</td>
+            </tr>
+            <tr>
+                <td><code>_is_edge_clear()</code></td>
+                <td>Kiểm tra đường đi qua biên bàn chơi</td>
+            </tr>
+        </table>
+
+        <!-- Giải thuật 3: Hint Finding -->
+        <h3>4.3. Hint Finding Algorithm (Tìm Gợi Ý)</h3>
+        <div class="algorithm-box">
+            <strong>📍 Vị trí:</strong> <code>/backend/app/services/game_service.py</code> (dòng 223-259)<br>
+            <strong>🎯 Mục đích:</strong> Tìm một cặp Pokemon có thể ghép được để gợi ý người chơi
+        </div>
+
+        <div class="complexity-box">
+            <strong>⏱️ Độ phức tạp:</strong><br>
+            • Time Complexity: <strong>O(n²)</strong> worst case, nhưng có early termination<br>
+            • Space Complexity: <strong>O(n)</strong> cho hash map
+        </div>
+
+        <h4>4.3.1. Mã Nguồn</h4>
+        <div class="code-block">
+def find_hint(game_state):
+    """
+    Tìm một nước đi hợp lệ để gợi ý
+    """
+    # Bước 1: Build hash map
+    pokemon_positions = {}  # {pokemon_id: [positions]}
+
+    for row in range(rows):
+        for col in range(cols):
+            cell = grid[row][col]
+
+            # Chỉ xét Pokemon chưa bị đóng băng
+            if cell.type == "POKEMON" and not cell.is_frozen:
+                if cell.pokemon_id not in pokemon_positions:
+                    pokemon_positions[cell.pokemon_id] = []
+
+                pokemon_positions[cell.pokemon_id].append(
+                    Position(row, col)
+                )
+
+    # Bước 2: Kiểm tra từng loại Pokemon có >= 2 vị trí
+    for pokemon_id, positions in pokemon_positions.items():
+        if len(positions) < 2:
+            continue
+
+        # Bước 3: Thử tất cả các cặp của loại này
+        for i in range(len(positions)):
+            for j in range(i + 1, len(positions)):
+                pos1 = positions[i]
+                pos2 = positions[j]
+
+                # Kiểm tra xem có đường đi hợp lệ không
+                result = pathfinder.find_path(pos1, pos2, grid)
+
+                if result.is_valid:
+                    # Tìm thấy! Return ngay
+                    return {
+                        "pos1": pos1,
+                        "pos2": pos2,
+                        "path": result.path
+                    }
+
+    # Không tìm thấy nước đi nào
+    return None
+        </div>
+
+        <h4>4.3.2. Tối Ưu Hóa</h4>
+        <div class="success">
+            <strong>✅ Điểm mạnh:</strong>
+            <ul>
+                <li><strong>Hash Map:</strong> Nhóm Pokemon theo loại, tránh so sánh Pokemon khác loại (không bao giờ ghép được)</li>
+                <li><strong>Early Termination:</strong> Dừng ngay khi tìm thấy cặp hợp lệ đầu tiên, không cần duyệt hết</li>
+                <li><strong>Skip Frozen:</strong> Bỏ qua Pokemon bị đóng băng ngay từ bước build hash map</li>
+            </ul>
+        </div>
+
+        <h4>4.3.3. So Sánh với Brute Force</h4>
+        <table>
+            <tr>
+                <th>Phương pháp</th>
+                <th>Time Complexity</th>
+                <th>Giải thích</th>
+            </tr>
+            <tr>
+                <td><strong>Brute Force</strong></td>
+                <td>O(n⁴)</td>
+                <td>Duyệt tất cả cặp ô (n²) × kiểm tra đường đi (n²)</td>
+            </tr>
+            <tr>
+                <td><strong>Hash Map + Early Stop</strong></td>
+                <td>O(n) average</td>
+                <td>Build map O(n) + tìm cặp O(k²) với k = số Pokemon cùng loại (thường k << n)</td>
+            </tr>
+        </table>
+
+        <!-- Giải thuật 4: Board Generation -->
+        <h3>4.4. Board Generation (Tạo Bàn Chơi)</h3>
+        <div class="algorithm-box">
+            <strong>📍 Vị trí:</strong> <code>/backend/app/services/game_service.py</code> (dòng 31-97)<br>
+            <strong>🎯 Mục đích:</strong> Khởi tạo bàn chơi với phân bố Pokemon cân bằng
+        </div>
+
+        <div class="complexity-box">
+            <strong>⏱️ Độ phức tạp:</strong><br>
+            • Time Complexity: <strong>O(rows × cols)</strong><br>
+            • Space Complexity: <strong>O(rows × cols)</strong>
+        </div>
+
+        <div class="code-block">
+def generate_board(rows=8, cols=12, level=1):
+    """
+    Tạo bàn chơi mới
+    """
+    total_cells = rows * cols
+
+    # Bước 1: Tạo danh sách Pokemon (phải chẵn để ghép cặp)
+    pokemon_list = []
+
+    # Thêm 2 con của mỗi loại Pokemon (1-20)
+    for pokemon_id in range(1, 21):
+        pokemon_list.append(pokemon_id)
+        pokemon_list.append(pokemon_id)
+
+    # Bước 2: Điền thêm Pokemon ngẫu nhiên để đủ số ô
+    while len(pokemon_list) < total_cells:
+        random_id = random.randint(1, 20)
+        pokemon_list.append(random_id)
+        pokemon_list.append(random_id)  # Luôn thêm cặp
+
+    # Bước 3: Cắt bớt nếu thừa
+    pokemon_list = pokemon_list[:total_cells]
+
+    # Bước 4: Xáo trộn bằng Fisher-Yates
+    fisher_yates_shuffle(pokemon_list)
+
+    # Bước 5: Điền vào grid
+    grid = []
+    index = 0
+    for row in range(rows):
+        grid_row = []
+        for col in range(cols):
+            cell = Cell(
+                type="POKEMON",
+                pokemon_id=pokemon_list[index],
+                is_frozen=False
+            )
+            grid_row.append(cell)
+            index += 1
+        grid.append(grid_row)
+
+    # Bước 6: Thêm đá băng nếu level cao
+    if level >= 4:
+        add_ice_blocks(grid, level)
+
+    return GameBoard(
+        grid=grid,
+        rows=rows,
+        cols=cols,
+        time_remaining=300,
+        lives=5,
+        level=level,
+        score=0
+    )
+        </div>
+
+        <div class="note">
+            <strong>📌 Ràng buộc quan trọng:</strong>
+            <ul>
+                <li>Số ô phải <strong>chẵn</strong> (để ghép cặp)</li>
+                <li>Mọi Pokemon phải xuất hiện <strong>ít nhất 2 lần</strong> (để có thể ghép)</li>
+                <li>Default: 8 hàng × 12 cột = 96 ô</li>
+            </ul>
+        </div>
+
+        <!-- Giải thuật 5: Ice Placement -->
+        <h3>4.5. Ice Placement Algorithm (Đặt Đá Băng)</h3>
+        <div class="algorithm-box">
+            <strong>📍 Vị trí:</strong> <code>/backend/app/services/game_service.py</code> (dòng 115-126)<br>
+            <strong>🎯 Mục đích:</strong> Đặt đá băng ngẫu nhiên trên bàn chơi ở level cao
+        </div>
+
+        <div class="complexity-box">
+            <strong>⏱️ Độ phức tạp:</strong><br>
+            • Time Complexity: <strong>O(k)</strong> với k = số đá băng<br>
+            • Space Complexity: <strong>O(k)</strong>
+        </div>
+
+        <div class="code-block">
+def add_ice_blocks(grid, level):
+    """
+    Thêm đá băng vào bàn chơi
+    """
+    # Công thức tính số đá băng
+    ice_count = min(level - 3, (rows * cols) // 4)
+
+    ice_positions = set()
+
+    # Đặt đá băng ngẫu nhiên cho đến khi đủ số lượng
+    while len(ice_positions) < ice_count:
+        row = random.randint(0, rows - 1)
+        col = random.randint(0, cols - 1)
+
+        # Set tự động tránh trùng lặp
+        ice_positions.add((row, col))
+
+    # Đánh dấu các ô có đá băng
+    for (row, col) in ice_positions:
+        grid[row][col].is_frozen = True
+        </div>
+
+        <div class="warning">
+            <strong>⚠️ Lưu ý:</strong> Sử dụng <code>set</code> để tự động tránh đặt đá băng trùng vị trí. Khi thêm tuple (row, col) vào set, Python sẽ bỏ qua nếu đã tồn tại.
+        </div>
+
+        <!-- Giải thuật 6: Move Validation -->
+        <h3>4.6. Move Validation & Board Update</h3>
+        <div class="algorithm-box">
+            <strong>📍 Vị trí:</strong> <code>/backend/app/services/game_service.py</code> (dòng 128-158)<br>
+            <strong>🎯 Mục đích:</strong> Kiểm tra nước đi hợp lệ và cập nhật bàn chơi
+        </div>
+
+        <div class="code-block">
+def make_move(game_state, pos1, pos2):
+    """
+    Thực hiện nước đi
+    """
+    grid = game_state.board.grid
+
+    # Bước 1: Validate cùng loại Pokemon
+    cell1 = grid[pos1.row][pos1.col]
+    cell2 = grid[pos2.row][pos2.col]
+
+    if cell1.pokemon_id != cell2.pokemon_id:
+        return {"success": False, "message": "Không cùng loại Pokemon"}
+
+    # Bước 2: Validate không bị đóng băng
+    if cell1.is_frozen or cell2.is_frozen:
+        return {"success": False, "message": "Pokemon bị đóng băng"}
+
+    # Bước 3: Tìm đường đi
+    result = pathfinder.find_path(pos1, pos2, grid)
+
+    if not result.is_valid:
+        return {"success": False, "message": "Không có đường đi hợp lệ"}
+
+    # Bước 4: Xóa 2 Pokemon
+    grid[pos1.row][pos1.col] = Cell(type="EMPTY")
+    grid[pos2.row][pos2.col] = Cell(type="EMPTY")
+
+    # Bước 5: Xóa đá băng liền kề (4 hướng)
+    for (dr, dc) in [(-1,0), (1,0), (0,-1), (0,1)]:
+        remove_ice(pos1.row + dr, pos1.col + dc, grid)
+        remove_ice(pos2.row + dr, pos2.col + dc, grid)
+
+    # Bước 6: Cập nhật điểm
+    points = 10 * (4 - result.turns)
+    game_state.board.score += points
+
+    # Bước 7: Kiểm tra thắng
+    if is_board_clear(grid):
+        game_state.victory = True
+
+    return {
+        "success": True,
+        "path": result.path,
+        "turns": result.turns,
+        "score": points
+    }
+        </div>
+
+        <!-- Giải thuật 7: Board Clear Check -->
+        <h3>4.7. Board Clear Check (Kiểm Tra Thắng)</h3>
+        <div class="algorithm-box">
+            <strong>📍 Vị trí:</strong> <code>/backend/app/services/game_service.py</code> (dòng 173-179)<br>
+            <strong>🎯 Mục đích:</strong> Kiểm tra xem đã xóa hết Pokemon chưa
+        </div>
+
+        <div class="complexity-box">
+            <strong>⏱️ Độ phức tạp:</strong><br>
+            • Time Complexity: <strong>O(rows × cols)</strong><br>
+            • Space Complexity: <strong>O(1)</strong>
+        </div>
+
+        <div class="code-block">
+def is_board_clear(grid):
+    """
+    Kiểm tra xem còn Pokemon nào không
+    """
+    for row in grid:
+        for cell in row:
+            if cell.type == "POKEMON":
+                return False  # Còn Pokemon → chưa thắng
+
+    return True  # Hết Pokemon → Thắng!
+        </div>
+
+        <!-- 5. Các hệ thống game -->
+        <h2 id="he-thong-game">5. CÁC HỆ THỐNG GAME</h2>
+
+        <h3>5.1. Game Initialization System</h3>
+        <div class="algorithm-box">
+            <strong>🔗 API:</strong> <code>POST /api/game/new</code>
+        </div>
+
+        <p><strong>Flow:</strong></p>
+        <ol>
+            <li>Tạo grid 8×12</li>
+            <li>Phân bố 20 loại Pokemon đều</li>
+            <li>Xáo trộn bằng Fisher-Yates</li>
+            <li>Khởi tạo: score=0, lives=5, time=300s</li>
+            <li>Return game_id (UUID) và game_state</li>
+        </ol>
+
+        <h3>5.2. Move System</h3>
+        <div class="algorithm-box">
+            <strong>🔗 API:</strong> <code>POST /api/game/{id}/move</code>
+        </div>
+
+        <p><strong>Flow:</strong></p>
+        <ol>
+            <li>Validate cùng loại Pokemon</li>
+            <li>Validate không bị đóng băng</li>
+            <li>Tìm đường đi (max 3 rẽ)</li>
+            <li>Cập nhật grid và điểm số</li>
+            <li>Xóa đá băng liền kề</li>
+            <li>Kiểm tra thắng</li>
+            <li>Auto-shuffle nếu hết nước đi</li>
+        </ol>
+
+        <h3>5.3. Hint System</h3>
+        <div class="algorithm-box">
+            <strong>🔗 API:</strong> <code>POST /api/game/{id}/hint</code>
+        </div>
+
+        <p><strong>Flow:</strong></p>
+        <ol>
+            <li>Build hash map: pokemon_id → positions</li>
+            <li>Duyệt từng loại Pokemon có ≥2 vị trí</li>
+            <li>Tìm cặp đầu tiên có đường đi hợp lệ</li>
+            <li>Return vị trí gợi ý HOẶC trigger shuffle</li>
+        </ol>
+
+        <h3>5.4. Shuffle System</h3>
+        <div class="algorithm-box">
+            <strong>🔗 API:</strong> <code>POST /api/game/{id}/shuffle</code>
+        </div>
+
+        <p><strong>Flow:</strong></p>
+        <ol>
+            <li>Thu thập tất cả Pokemon còn lại</li>
+            <li>Xáo trộn danh sách (Fisher-Yates)</li>
+            <li>Phân bố lại vào cùng vị trí ô</li>
+            <li>Trừ 1 mạng</li>
+            <li>Game over nếu lives = 0</li>
+        </ol>
+
+        <h3>5.5. Time System</h3>
+        <div class="algorithm-box">
+            <strong>🔗 API:</strong> <code>POST /api/game/{id}/time</code>
+        </div>
+
+        <p><strong>Flow:</strong></p>
+        <ol>
+            <li>Giảm time_remaining</li>
+            <li>Trigger game over nếu time ≤ 0</li>
+        </ol>
+
+        <h3>5.6. Tổng Hợp API Endpoints</h3>
+        <table>
+            <tr>
+                <th>Method</th>
+                <th>Endpoint</th>
+                <th>Mô tả</th>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td>/api/game/new</td>
+                <td>Tạo game mới</td>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td>/api/game/{id}</td>
+                <td>Lấy trạng thái game</td>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td>/api/game/{id}/move</td>
+                <td>Thực hiện nước đi</td>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td>/api/game/{id}/hint</td>
+                <td>Lấy gợi ý</td>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td>/api/game/{id}/shuffle</td>
+                <td>Xáo bàn</td>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td>/api/game/{id}/time</td>
+                <td>Cập nhật thời gian</td>
+            </tr>
+            <tr>
+                <td>DELETE</td>
+                <td>/api/game/{id}</td>
+                <td>Xóa game</td>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td>/pokemon</td>
+                <td>Lấy dữ liệu Pokemon</td>
+            </tr>
+        </table>
+
+        <!-- 6. Phân tích độ phức tạp -->
+        <h2 id="phan-tich-do-phuc-tap">6. PHÂN TÍCH ĐỘ PHỨC TẠP</h2>
+
+        <h3>6.1. Time & Space Complexity Tổng Hợp</h3>
+        <table>
+            <tr>
+                <th>Thao tác</th>
+                <th>Time Complexity</th>
+                <th>Space Complexity</th>
+                <th>Ghi chú</th>
+            </tr>
+            <tr>
+                <td>Board Generation</td>
+                <td>O(n)</td>
+                <td>O(n)</td>
+                <td>n = rows × cols</td>
+            </tr>
+            <tr>
+                <td>Fisher-Yates Shuffle</td>
+                <td>O(n)</td>
+                <td>O(1)</td>
+                <td>In-place shuffling</td>
+            </tr>
+            <tr>
+                <td>Pathfinding (Simple)</td>
+                <td>O(rows × cols)</td>
+                <td>O(rows × cols)</td>
+                <td>Early termination</td>
+            </tr>
+            <tr>
+                <td>Pathfinding (BFS)</td>
+                <td>O(n × 4)</td>
+                <td>O(n)</td>
+                <td>4 hướng, track visited</td>
+            </tr>
+            <tr>
+                <td>Hint Finding</td>
+                <td>O(n²) worst, O(n) avg</td>
+                <td>O(n)</td>
+                <td>Hash map + early stop</td>
+            </tr>
+            <tr>
+                <td>Board Clear Check</td>
+                <td>O(n)</td>
+                <td>O(1)</td>
+                <td>Single pass scan</td>
+            </tr>
+            <tr>
+                <td>Ice Placement</td>
+                <td>O(k)</td>
+                <td>O(k)</td>
+                <td>k = ice count</td>
+            </tr>
+            <tr>
+                <td>Move Validation</td>
+                <td>O(rows × cols)</td>
+                <td>O(rows × cols)</td>
+                <td>Gọi pathfinding</td>
+            </tr>
+        </table>
+
+        <h3>6.2. Phân Tích Chi Tiết</h3>
+
+        <h4>6.2.1. Tại Sao Simplified Pathfinding Hiệu Quả?</h4>
+        <div class="success">
+            <strong>✅ Lý do:</strong>
+            <ul>
+                <li><strong>Early Termination:</strong> Dừng ngay khi tìm thấy đường (thường là đường đơn giản)</li>
+                <li><strong>Thứ tự Tối Ưu:</strong> Kiểm tra đường đơn giản trước (0 rẽ, 1 rẽ) → xác suất cao tìm thấy sớm</li>
+                <li><strong>Cache-Friendly:</strong> Truy cập tuần tự vào grid (tốt cho CPU cache)</li>
+            </ul>
+        </div>
+
+        <h4>6.2.2. Tại Sao Hash Map Quan Trọng?</h4>
+        <p>Giảm độ phức tạp từ O(n⁴) xuống O(n) average case:</p>
+        <div class="code-block">
+# Brute Force: O(n⁴)
+for pos1 in all_cells:           # O(n)
+    for pos2 in all_cells:       # O(n)
+        if same_pokemon:
+            check_path()          # O(n²)
+
+# Hash Map: O(n) average
+build_map()                       # O(n)
+for pokemon_id, positions:        # O(20) = O(1)
+    for i in range(len):          # O(k) với k << n
+        for j in range(i+1):      # O(k)
+            check_path()          # O(n²) nhưng return ngay
+        </div>
+
+        <h3>6.3. Memory Efficiency</h3>
+        <ul>
+            <li><strong>In-Memory Storage:</strong> Lưu game state trong RAM (Dict) → Fast access O(1)</li>
+            <li><strong>No Database:</strong> Không cần persistence → Đơn giản hóa kiến trúc</li>
+            <li><strong>Stateless API:</strong> Mỗi request độc lập → Dễ scale horizontal</li>
+        </ul>
+
+        <!-- 7. Frontend -->
+        <h2 id="frontend">7. KIẾN TRÚC FRONTEND</h2>
+
+        <h3>7.1. Component Hierarchy</h3>
+        <div class="architecture-diagram">
+App.jsx (Root Component)
+│
+├── GameBoard.jsx
+│   ├── Cell.jsx (Individual cell × 96)
+│   └── MatchLine.jsx (SVG animation overlay)
+│
+├── GameInfo.jsx
+│   ├── Score Display
+│   ├── Lives Display
+│   ├── Level Display
+│   └── Timer Display
+│
+└── Controls
+    ├── New Game Button
+    ├── Hint Button
+    └── Shuffle Button
+        </div>
+
+        <h3>7.2. State Management (React Hooks)</h3>
+        <table>
+            <tr>
+                <th>State</th>
+                <th>Type</th>
+                <th>Mô tả</th>
+            </tr>
+            <tr>
+                <td>gameState</td>
+                <td>GameState</td>
+                <td>Toàn bộ trạng thái game từ backend</td>
+            </tr>
+            <tr>
+                <td>gameId</td>
+                <td>string</td>
+                <td>UUID định danh game hiện tại</td>
+            </tr>
+            <tr>
+                <td>selectedCell</td>
+                <td>Position | null</td>
+                <td>Ô Pokemon đầu tiên được chọn</td>
+            </tr>
+            <tr>
+                <td>hintCells</td>
+                <td>Position[]</td>
+                <td>Vị trí gợi ý (highlight)</td>
+            </tr>
+            <tr>
+                <td>matchPath</td>
+                <td>Position[] | null</td>
+                <td>Đường đi animation khi ghép thành công</td>
+            </tr>
+            <tr>
+                <td>loading</td>
+                <td>boolean</td>
+                <td>Trạng thái đang gọi API</td>
+            </tr>
+            <tr>
+                <td>message</td>
+                <td>string</td>
+                <td>Thông báo phản hồi người dùng</td>
+            </tr>
+        </table>
+
+        <h3>7.3. Animation System</h3>
+        <h4>7.3.1. MatchLine Component</h4>
+        <p>Component SVG overlay vẽ đường nối khi ghép thành công.</p>
+
+        <div class="code-block">
+// MatchLine.jsx
+const MatchLine = ({ path, cellSize }) => {
+    // 1. Normalize tọa độ grid → pixel coordinates
+    const points = path.map(pos => ({
+        x: pos.col * cellSize + cellSize / 2,
+        y: pos.row * cellSize + cellSize / 2
+    }))
+
+    // 2. Vẽ polyline nối các điểm
+    const pathString = points
+        .map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`)
+        .join(' ')
+
+    // 3. Vẽ circles tại điểm rẽ
+    return (
+        <svg className="match-line-overlay">
+            {/* Đường nối màu xanh lá */}
+            <path
+                d={pathString}
+                stroke="#4ade80"
+                strokeWidth="4"
+                fill="none"
+                className="animate-fade-out"
+            />
+
+            {/* Vòng tròn tại các điểm rẽ */}
+            {points.map((point, i) => (
+                <circle
+                    key={i}
+                    cx={point.x}
+                    cy={point.y}
+                    r="6"
+                    fill="#4ade80"
+                    className="animate-fade-out"
+                />
+            ))}
+        </svg>
+    )
+}
+        </div>
+
+        <h4>7.3.2. Animation Timeline</h4>
+        <ol>
+            <li><strong>T=0ms:</strong> Người chơi click ghép thành công</li>
+            <li><strong>T=0-600ms:</strong> Hiển thị đường nối màu xanh lá</li>
+            <li><strong>T=600-1400ms:</strong> Fade-out animation</li>
+            <li><strong>T=1400ms:</strong> Xóa hoàn toàn SVG overlay</li>
+        </ol>
+
+        <h3>7.4. Pokemon Sprite Loading</h3>
+        <div class="algorithm-box">
+            <strong>📍 Vị trí:</strong> <code>/frontend/src/services/api.js</code>
+        </div>
+
+        <div class="code-block">
+// Preload tất cả sprites trước khi bắt đầu game
+export const preloadPokemonSprites = () => {
+    const pokemonIds = [25, 1, 4, 7, 133, 39, ...]  // 20 Pokemon
+
+    return Promise.all(
+        pokemonIds.map(id => {
+            return new Promise((resolve, reject) => {
+                const img = new Image()
+                img.onload = () => resolve(img)
+                img.onerror = reject
+                img.src = getPokemonSprite(id)
+            })
+        })
+    )
+}
+
+// URL sprite từ PokeAPI
+export const getPokemonSprite = (pokedexId) => {
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokedexId}.png`
+}
+        </div>
+
+        <div class="note">
+            <strong>💡 Lợi ích:</strong> Preload tránh flickering và delay khi hiển thị Pokemon trong game.
+        </div>
+
+        <h3>7.5. Danh Sách 20 Pokemon</h3>
+        <table>
+            <tr>
+                <th>ID Game</th>
+                <th>Tên Pokemon</th>
+                <th>Pokedex ID</th>
+                <th>ID Game</th>
+                <th>Tên Pokemon</th>
+                <th>Pokedex ID</th>
+            </tr>
+            <tr>
+                <td>1</td><td>Pikachu</td><td>25</td>
+                <td>11</td><td>Togepi</td><td>175</td>
+            </tr>
+            <tr>
+                <td>2</td><td>Bulbasaur</td><td>1</td>
+                <td>12</td><td>Chikorita</td><td>152</td>
+            </tr>
+            <tr>
+                <td>3</td><td>Charmander</td><td>4</td>
+                <td>13</td><td>Totodile</td><td>158</td>
+            </tr>
+            <tr>
+                <td>4</td><td>Squirtle</td><td>7</td>
+                <td>14</td><td>Cyndaquil</td><td>155</td>
+            </tr>
+            <tr>
+                <td>5</td><td>Eevee</td><td>133</td>
+                <td>15</td><td>Mudkip</td><td>258</td>
+            </tr>
+            <tr>
+                <td>6</td><td>Jigglypuff</td><td>39</td>
+                <td>16</td><td>Torchic</td><td>255</td>
+            </tr>
+            <tr>
+                <td>7</td><td>Meowth</td><td>52</td>
+                <td>17</td><td>Treecko</td><td>252</td>
+            </tr>
+            <tr>
+                <td>8</td><td>Psyduck</td><td>54</td>
+                <td>18</td><td>Piplup</td><td>393</td>
+            </tr>
+            <tr>
+                <td>9</td><td>Snorlax</td><td>143</td>
+                <td>19</td><td>Turtwig</td><td>387</td>
+            </tr>
+            <tr>
+                <td>10</td><td>Mew</td><td>151</td>
+                <td>20</td><td>Chimchar</td><td>390</td>
+            </tr>
+        </table>
+
+        <!-- 8. Kết luận -->
+        <h2 id="ket-luan">8. KẾT LUẬN & ĐÁNH GIÁ</h2>
+
+        <h3>8.1. Điểm Mạnh Kỹ Thuật</h3>
+        <div class="success">
+            <strong>✅ Ưu điểm:</strong>
+            <ol>
+                <li><strong>Thiết Kế Modular:</strong> Tách biệt rõ ràng giữa models, services, core algorithms → Dễ bảo trì và mở rộng</li>
+                <li><strong>Tập Trung DSA:</strong> Thể hiện rõ các giải thuật kinh điển (BFS, Fisher-Yates, Hash Map, Pathfinding)</li>
+                <li><strong>Tối Ưu Hiệu Suất:</strong> Early termination, hash maps cho O(1) lookup, simplified pathfinding</li>
+                <li><strong>Scalable Architecture:</strong> Có thể điều chỉnh kích thước bàn chơi (mặc định 8×12)</li>
+                <li><strong>Frontend Performance:</strong> Sprite preloading, SVG animations, React hooks state management</li>
+                <li><strong>Production-Ready:</strong> Error handling, type validation (Pydantic), HTTP status codes chuẩn</li>
+                <li><strong>Testing Support:</strong> File test_algorithms.py minh họa các giải thuật</li>
+            </ol>
+        </div>
+
+        <h3>8.2. Kiến Thức DSA Được Áp Dụng</h3>
+        <table>
+            <tr>
+                <th>Chủ đề DSA</th>
+                <th>Ứng dụng trong game</th>
+            </tr>
+            <tr>
+                <td><strong>Graph Algorithms</strong></td>
+                <td>BFS pathfinding với ràng buộc lượt rẽ</td>
+            </tr>
+            <tr>
+                <td><strong>Randomization</strong></td>
+                <td>Fisher-Yates shuffle để phân bố Pokemon</td>
+            </tr>
+            <tr>
+                <td><strong>Hash Tables</strong></td>
+                <td>Group Pokemon theo loại cho hint system</td>
+            </tr>
+            <tr>
+                <td><strong>Greedy Algorithms</strong></td>
+                <td>Simplified pathfinding (thử đường đơn giản trước)</td>
+            </tr>
+            <tr>
+                <td><strong>2D Arrays</strong></td>
+                <td>Grid representation của bàn chơi</td>
+            </tr>
+            <tr>
+                <td><strong>State Management</strong></td>
+                <td>Game state tracking (board, score, lives, etc.)</td>
+            </tr>
+            <tr>
+                <td><strong>Space-Time Tradeoff</strong></td>
+                <td>Hash map tốn O(n) space nhưng tăng tốc từ O(n²) → O(1)</td>
+            </tr>
+        </table>
+
+        <h3>8.3. Đề Xuất Cải Tiến</h3>
+        <div class="warning">
+            <strong>🔧 Có thể cải thiện:</strong>
+            <ul>
+                <li><strong>Persistence:</strong> Thêm database (PostgreSQL/MongoDB) để lưu game history, leaderboard</li>
+                <li><strong>Multiplayer:</strong> Sử dụng WebSocket cho chế độ chơi real-time 2 người</li>
+                <li><strong>AI Solver:</strong> Implement AI agent tự giải game (A* algorithm, backtracking)</li>
+                <li><strong>Dynamic Difficulty:</strong> Điều chỉnh số lượt rẽ tối đa theo level (level 1: 3 rẽ, level 10: 2 rẽ, etc.)</li>
+                <li><strong>Power-ups:</strong> Thêm item đặc biệt (bomb xóa vùng, freeze time, etc.)</li>
+                <li><strong>Animation Polish:</strong> Particle effects khi ghép thành công, shake animation khi sai</li>
+                <li><strong>Sound Effects:</strong> Âm thanh Pokemon khi click, nhạc nền</li>
+                <li><strong>Mobile Responsive:</strong> Tối ưu cho thiết bị di động (touch events, adaptive layout)</li>
+            </ul>
+        </div>
+
+        <h3>8.4. Kết Luận Cuối Cùng</h3>
+        <p>
+            <strong>PokeKawaii</strong> là một dự án game được thiết kế tốt, thể hiện rõ kiến thức về <span class="highlight">Data Structures & Algorithms</span> trong một ứng dụng thực tế. Game kết hợp thành công giữa:
+        </p>
+        <ul>
+            <li>✅ <strong>Giải thuật kinh điển:</strong> BFS, Fisher-Yates, Hash Map, Pathfinding</li>
+            <li>✅ <strong>Kiến trúc sạch:</strong> Separation of concerns, modular design</li>
+            <li>✅ <strong>Tối ưu hiệu suất:</strong> Early termination, O(1) lookups, in-place operations</li>
+            <li>✅ <strong>UX/UI tốt:</strong> Smooth animations, sprite preloading, responsive feedback</li>
+        </ul>
+
+        <p style="margin-top: 30px; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 10px; text-align: center; font-size: 1.1em;">
+            <strong>🎓 Dự án này là một ví dụ xuất sắc về việc áp dụng DSA vào game development, phù hợp cho mục đích học tập và demo kỹ năng lập trình!</strong>
+        </p>
+
+        <hr style="margin: 40px 0; border: none; border-top: 2px solid #e0e0e0;">
+
+        <div style="text-align: center; color: #666; margin-top: 40px;">
+            <p><strong>Tài liệu được tạo tự động bởi Claude Code</strong></p>
+            <p>Ngày tạo: 17/01/2026</p>
+            <p>© PokeKawaii Project Analysis</p>
+        </div>
+    </div>
+</body>
+</html>

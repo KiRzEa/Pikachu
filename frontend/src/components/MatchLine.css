@@ -1,0 +1,24 @@
+.match-line-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 100;
+  opacity: 1;
+  transition: opacity 0.8s ease-out;
+}
+
+.match-line-container.fade-out {
+  opacity: 0;
+}
+
+.match-line-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}

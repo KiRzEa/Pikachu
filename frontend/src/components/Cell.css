@@ -1,0 +1,122 @@
+.cell {
+  aspect-ratio: 1;
+  background: linear-gradient(145deg, #ffffff, #f0f0f0);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  box-shadow:
+    0 3px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  font-size: 2rem;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+.cell::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.cell:hover:not(.empty):not(.disabled) {
+  transform: scale(1.12) translateY(-2px);
+  box-shadow:
+    0 6px 15px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.cell.empty {
+  background: transparent;
+  border: none;
+  cursor: default;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+.cell.empty::before {
+  display: none;
+}
+
+.cell.selected {
+  background: linear-gradient(145deg, #ffd700, #ffed4e);
+  transform: scale(1.18) translateY(-3px);
+  box-shadow:
+    0 0 25px rgba(255, 215, 0, 0.9),
+    0 8px 20px rgba(255, 215, 0, 0.4);
+  border: 3px solid #fff;
+  animation: pulse 0.6s ease-in-out infinite;
+  z-index: 10;
+}
+
+.cell.hinted {
+  background: linear-gradient(145deg, #90EE90, #7FFF7F);
+  animation: hint-pulse 1.2s ease-in-out infinite;
+  border: 3px solid #4CAF50;
+  z-index: 5;
+}
+
+.cell.frozen {
+  border: 3px solid #87CEEB;
+  box-shadow:
+    0 0 15px rgba(135, 206, 235, 0.5),
+    inset 0 0 10px rgba(135, 206, 235, 0.2);
+}
+
+.cell.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(0.3);
+}
+
+.pokemon-emoji {
+  font-size: 2.5rem;
+  user-select: none;
+}
+
+.pokemon-sprite {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+.ice-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 215, 0, 1);
+  }
+}
+
+@keyframes hint-pulse {
+  0%,
+  100% {
+    background: #90EE90;
+  }
+  50% {
+    background: #7FFF7F;
+  }
+}
